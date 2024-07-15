@@ -8,125 +8,123 @@
   </head>
   <body>
 
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-      html,
-      body {
-        height: 100%;
-        width: 100%;
-      }
-    
-      body {
-        background-color: #1a1a1a;
-        font-family: Arial, Helvetica, sans-serif;
-      }
-    
-      .container {
-        height: auto;
-        width: 100%;
-        padding: 200px 20px;
-      }
-    
-      .stack-card {
-        width: 100%;
-        height: 400px;
-        margin-bottom: 50px;
-        background-color: #ffffff;
-        border-radius: 15px;
-        text-align: center;
-        justify-content: center;
-        align-items: center;
-        display: flex;
-        color: rgb(0, 0, 0);
-      }
-    </style>
-    
-    <div class="container">
-      <div class="stack-card">CONTENT 1</div>
-      <div class="stack-card">CONTENT 2</div>
-      <div class="stack-card">CONTENT 3</div>
-      <div class="stack-card">CONTENT 4</div>
-      <div class="stack-card">CONTENT 5</div>
-      <div class="stack-card">CONTENT 6</div>
-      <div class="stack-card">CONTENT 7</div>
-      <div class="stack-card">CONTENT 8</div>
-    </div>
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    
-    <script>
-      document.addEventListener("DOMContentLoaded", function() {
-        const cards = document.querySelectorAll('.stack-card');
-        const penultimateCard = cards[cards.length - 2]; // Second last card
-        const lastCard = cards[cards.length - 1];
-        ScrollTrigger.refresh();
-    
-        gsap.config({
-          nullTargetWarn: false,
-          force3D: false
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  html,
+  body {
+    height: 100%;
+    width: 100%;
+  }
+
+  body {
+    background-color: #1a1a1a;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .container {
+    height: auto;
+    width: 100%;
+    padding: 200px 20px;
+  }
+
+  .stack-card {
+    width: 100%;
+    height: 400px;
+    margin-bottom: 50px;
+    background-color: #ffffff;
+    border-radius: 15px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    color: rgb(0, 0, 0);
+  }
+</style>
+
+<div class="container">
+  <div class="stack-card">CONTENT 22</div>
+  <div class="stack-card">CONTENT 2</div>
+  <div class="stack-card">CONTENT 3</div>
+  <div class="stack-card">CONTENT 4</div>
+  <div class="stack-card">CONTENT 5</div>
+  <div class="stack-card">CONTENT 6</div>
+  <div class="stack-card">CONTENT 7</div>
+  <div class="stack-card">CONTENT 8</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const cards = document.querySelectorAll('.stack-card');
+    const penultimateCard = cards[cards.length - 2]; // Second last card
+    const lastCard = cards[cards.length - 1];
+
+    gsap.config({
+      nullTargetWarn: false,
+      force3D: false
+    });
+
+    cards.forEach((card, index) => {
+      let startPercentage = index * 3 + 10;
+      let scaleValue = 0.70 + (index * 0.05);
+      if (scaleValue > 1) scaleValue = 1;
+
+      if (card) {
+        gsap.to(card, {
+          scale: scaleValue,
+          transformOrigin: 'top',
+          scrollTrigger: {
+            trigger: card,
+            start: `top ${startPercentage + 10}%`,
+            endTrigger: penultimateCard,
+            end: 'center+=85% center',
+            scrub: 1,  // Adjusted scrub value for smoother animation
+            markers: true,  // Enable markers for debugging
+            pin: card !== lastCard,
+            pinSpacing: false,
+            onEnter: () => gsap.set(card, {willChange: 'transform'}),
+            onLeave: () => gsap.set(card, {willChange: ''}),
+            onEnterBack: () => gsap.set(card, {willChange: 'transform'}),
+            onLeaveBack: () => gsap.set(card, {willChange: ''}),
+          },
         });
-    
-        cards.forEach((card, index) => {
-          const internalElement = card.querySelector('.stack-card-internal');
-          let startPercentage = index * 3 + 10;
-          let scaleValue = 0.70 + (index * 0.05);
-          if (scaleValue > 1) scaleValue = 1;
-    
-          if (card) {
-            gsap.to(card, {
-              scale: scaleValue,
-              transformOrigin: 'top',
-              scrollTrigger: {
-                trigger: card,
-                start: `top ${startPercentage + 10}%`,
-                endTrigger: penultimateCard,
-                end: 'center+=85% center',
-                scrub: 0.5,  // Adjusted scrub value for smoother animation
-                markers: true,  // Enable markers for debugging
-                pin: card !== lastCard,
-                pinSpacing: false,
-                onEnter: () => gsap.set(card, {willChange: 'transform'}),
-                onLeave: () => gsap.set(card, {willChange: ''}),
-                onEnterBack: () => gsap.set(card, {willChange: 'transform'}),
-                onLeaveBack: () => gsap.set(card, {willChange: ''}),
-              },
-            });
-    
-            if (internalElement && card !== lastCard) {
-              const tl = gsap.timeline({
-                scrollTrigger: {
-                  trigger: card,
-                  start: `top ${startPercentage + 10}%`,
-                  end: 'bottom bottom',
-                  scrub: 0.5,  // Adjusted scrub value based on performance testing
-                }
-              });
-    
-              tl.to(internalElement, { backgroundColor: "rgb(27,27,27)" });
-            } else if (card === lastCard) {
-              gsap.to(card, {
-                scrollTrigger: {
-                  trigger: card,
-                  start: `top ${startPercentage + 10}%`,
-                  end: `bottom bottom`,
-                  scrub: 0.5,  // Adjusted scrub value for smoother animation
-                  pin: true,
-                  pinSpacing: false,
-                },
-              });
+
+        if (card !== lastCard) {
+          const tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: card,
+              start: `top ${startPercentage + 10}%`,
+              end: 'bottom bottom',
+              scrub: 1,  // Adjusted scrub value for smoother animation
             }
-          }
-        });
-    
-        ScrollTrigger.refresh();
-      });
-    </script>
-    
+          });
+
+          tl.to(card, { backgroundColor: "rgb(27,27,27)" });
+        } else if (card === lastCard) {
+          gsap.to(card, {
+            scrollTrigger: {
+              trigger: card,
+              start: `top ${startPercentage + 10}%`,
+              end: `bottom bottom`,
+              scrub: 1,  // Adjusted scrub value for smoother animation
+              pin: true,
+              pinSpacing: false,
+            },
+          });
+        }
+      }
+    });
+
+    ScrollTrigger.refresh();
+  });
+</script>
+
 
 
     <!-- <script src="animate.js"></script> -->
