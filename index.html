@@ -46,7 +46,7 @@
 </style>
 
 <div class="container">
-  <div class="stack-card">CONTENT 22</div>
+  <div class="stack-card">CONTENT 1</div>
   <div class="stack-card">CONTENT 2</div>
   <div class="stack-card">CONTENT 3</div>
   <div class="stack-card">CONTENT 4</div>
@@ -64,6 +64,7 @@
     const cards = document.querySelectorAll('.stack-card');
     const penultimateCard = cards[cards.length - 2]; // Second last card
     const lastCard = cards[cards.length - 1];
+    ScrollTrigger.refresh();
 
     gsap.config({
       nullTargetWarn: false,
@@ -71,6 +72,7 @@
     });
 
     cards.forEach((card, index) => {
+      const internalElement = card.querySelector('.stack-card-internal');
       let startPercentage = index * 3 + 10;
       let scaleValue = 0.70 + (index * 0.05);
       if (scaleValue > 1) scaleValue = 1;
@@ -84,7 +86,7 @@
             start: `top ${startPercentage + 10}%`,
             endTrigger: penultimateCard,
             end: 'center+=85% center',
-            scrub: 1,  // Adjusted scrub value for smoother animation
+            scrub: 0.5,  // Adjusted scrub value for smoother animation
             markers: true,  // Enable markers for debugging
             pin: card !== lastCard,
             pinSpacing: false,
@@ -95,24 +97,24 @@
           },
         });
 
-        if (card !== lastCard) {
+        if (internalElement && card !== lastCard) {
           const tl = gsap.timeline({
             scrollTrigger: {
               trigger: card,
               start: `top ${startPercentage + 10}%`,
               end: 'bottom bottom',
-              scrub: 1,  // Adjusted scrub value for smoother animation
+              scrub: 0.5,  // Adjusted scrub value based on performance testing
             }
           });
 
-          tl.to(card, { backgroundColor: "rgb(27,27,27)" });
+          tl.to(internalElement, { backgroundColor: "rgb(27,27,27)" });
         } else if (card === lastCard) {
           gsap.to(card, {
             scrollTrigger: {
               trigger: card,
               start: `top ${startPercentage + 10}%`,
               end: `bottom bottom`,
-              scrub: 1,  // Adjusted scrub value for smoother animation
+              scrub: 0.5,  // Adjusted scrub value for smoother animation
               pin: true,
               pinSpacing: false,
             },
@@ -124,6 +126,7 @@
     ScrollTrigger.refresh();
   });
 </script>
+
 
 
 
